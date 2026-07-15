@@ -1,12 +1,30 @@
 import { Tray, Menu, app, BrowserWindow, nativeImage } from 'electron';
+import path from 'path';
 import { activityTracker } from './activity-tracker';
 import { settingsRepository } from '../../database/repositories/settings.repository';
+import { getAppIcon } from '../lib/app-icon';
+
+function createTrayImage() {
+  const icon = getAppIcon();
+  if (!icon.isEmpty()) {
+    // Tray prefers a smaller template on macOS; resize the app icon
+    const size = process.platform === 'darwin' ? 22 : 32;
+    return icon.resize({ width: size, height: size });
+  }
+
+  const trayPng = path.join(
+    app.isPackaged ? process.resourcesPath : path.join(app.getAppPath(), 'resources', 'icons'),
+    app.isPackaged ? 'icon.png' : 'icon-32.png',
+  );
+  const fromFile = nativeImage.createFromPath(trayPng);
+  return fromFile.isEmpty() ? nativeImage.createEmpty() : fromFile;
+}
 
 export class TrayService {
   private tray: Tray | null = null;
 
   init(getMainWindow: () => BrowserWindow | null): void {
-    const icon = nativeImage.createEmpty();
+    const icon = createTrayImage();
     this.tray = new Tray(icon);
     this.tray.setToolTip('GoalOS');
 

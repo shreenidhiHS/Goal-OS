@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="GoalOS">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#134E4A"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="128" y1="120" x2="384" y2="392" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5EEAD4"/>
+      <stop offset="1" stop-color="#99F6E4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded app tile -->
+  <rect x="32" y="32" width="448" height="448" rx="96" fill="url(#bg)"/>
+
+  <!-- Outer target ring -->
+  <circle cx="256" cy="248" r="132" stroke="url(#ring)" stroke-width="28" opacity="0.95"/>
+  <!-- Mid ring -->
+  <circle cx="256" cy="248" r="84" stroke="#CCFBF1" stroke-width="22" opacity="0.9"/>
+  <!-- Inner disc -->
+  <circle cx="256" cy="248" r="40" fill="#F0FDFA"/>
+
+  <!-- Check mark (goal achieved) -->
+  <path
+    d="M214 252 L242 280 L302 212"
+    stroke="#0F766E"
+    stroke-width="28"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Subtle baseline accent -->
+  <rect x="168" y="412" width="176" height="18" rx="9" fill="#5EEAD4" opacity="0.45"/>
+</svg>

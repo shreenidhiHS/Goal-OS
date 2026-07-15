@@ -86,7 +86,7 @@ export function Sidebar() {
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'flex h-screen shrink-0 flex-col border-r border-white/5 bg-[var(--sidebar)] text-white transition-[width] duration-300 ease-out',
+          'sticky top-0 flex h-full shrink-0 flex-col self-start border-r border-white/5 bg-[var(--sidebar)] text-white transition-[width] duration-300 ease-out',
           sidebarCollapsed ? 'w-[68px]' : 'w-60',
         )}
       >
