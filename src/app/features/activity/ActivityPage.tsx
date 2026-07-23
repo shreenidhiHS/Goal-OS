@@ -3,6 +3,7 @@ import { Activity } from 'lucide-react';
 import { getElectronAPI, isElectronAvailable } from '@app/lib/ipc';
 import type { ActivitySession, ApplicationUsage } from '@shared/ipc/types';
 import { PageHeader } from '@app/components/layout/PageHeader';
+import { PageLayout } from '@app/components/layout/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@app/components/ui/Card';
 import { EmptyState } from '@app/components/ui/EmptyState';
 import { Progress } from '@app/components/ui/Progress';
@@ -57,23 +58,27 @@ export function ActivityPage() {
   const maxUsage = Math.max(...usage.map((u) => u.totalDuration), 1);
 
   if (loading) {
-    return <p className="text-sm text-[var(--text-muted)]">Loading activity...</p>;
+    return (
+      <PageLayout>
+        <p className="text-sm text-[var(--text-muted)]">Loading activity...</p>
+      </PageLayout>
+    );
   }
 
   if (error && !isElectronAvailable()) {
     return (
-      <div className="mx-auto max-w-5xl">
+      <PageLayout>
         <EmptyState
           icon={<Activity className="h-5 w-5" />}
           title="Activity requires Electron"
           description="Open GoalOS in the desktop window to view tracking data."
         />
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <PageLayout>
       <PageHeader
         title="Activity"
         description="Automatic window and application tracking."
@@ -135,6 +140,6 @@ export function ActivityPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }

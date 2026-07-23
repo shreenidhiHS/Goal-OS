@@ -93,24 +93,40 @@ export function Sidebar() {
         <div
           className={cn(
             'flex h-16 items-center border-b border-white/10',
-            sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4',
+            sidebarCollapsed ? 'justify-center gap-0 px-2' : 'justify-between gap-2 px-4',
           )}
         >
-          {!sidebarCollapsed && (
-            <div className="min-w-0">
-              <p className="truncate text-base font-bold tracking-tight">GoalOS</p>
-              <p className="truncate text-[11px] text-[var(--sidebar-muted)]">Local-first focus</p>
-            </div>
+          {sidebarCollapsed ? (
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              className="flex h-9 w-9 items-center justify-center rounded-xl hover:bg-white/10"
+              aria-label="Expand sidebar"
+            >
+              <img src="../../favicon.svg" alt="GoalOS" className="h-7 w-7" />
+            </button>
+          ) : (
+            <>
+              <div className="flex min-w-0 items-center gap-2.5">
+                <img src="../../favicon.svg" alt="" className="h-8 w-8 shrink-0" />
+                <p className="truncate text-base font-bold tracking-tight">GoalOS</p>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleSidebar}
+                className="text-[var(--sidebar-text)] hover:bg-white/10 hover:text-white"
+                aria-label="Collapse sidebar"
+              >
+                <PanelLeftClose className="h-4 w-4" />
+              </Button>
+            </>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleSidebar}
-            className="text-[var(--sidebar-text)] hover:bg-white/10 hover:text-white"
-            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {sidebarCollapsed ? <PanelLeft className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
-          </Button>
+          {sidebarCollapsed && (
+            <span className="sr-only">
+              <PanelLeft className="h-4 w-4" />
+            </span>
+          )}
         </div>
 
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">

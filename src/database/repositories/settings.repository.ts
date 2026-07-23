@@ -43,4 +43,21 @@ export const settingsRepository = {
   getValue<K extends keyof AppSettings>(key: K): AppSettings[K] {
     return this.get()[key];
   },
+
+  getKv(key: string): string | null {
+    const db = getDb();
+    const row = db.select().from(settings).where(eq(settings.key, key)).get();
+    return row?.value ?? null;
+  },
+
+  setKv(key: string, value: string): void {
+    const db = getDb();
+    db.insert(settings)
+      .values({ key, value })
+      .onConflictDoUpdate({
+        target: settings.key,
+        set: { value },
+      })
+      .run();
+  },
 };

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { CalendarCheck } from 'lucide-react';
 import { useTaskStore } from '@app/stores/taskStore';
 import { PageHeader } from '@app/components/layout/PageHeader';
+import { PageLayout } from '@app/components/layout/PageLayout';
 import { Card, CardContent } from '@app/components/ui/Card';
 import { Progress } from '@app/components/ui/Progress';
 import { EmptyState } from '@app/components/ui/EmptyState';
@@ -20,7 +21,7 @@ export function PlannerPage() {
   const progress = total > 0 ? Math.round((completedToday / total) * 100) : 0;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <PageLayout>
       <PageHeader
         title="Daily Planner"
         description="Plan and check off today's work."
@@ -66,6 +67,6 @@ export function PlannerPage() {
           ))}
         </ul>
       )}
-    </div>
+    </PageLayout>
   );
 }

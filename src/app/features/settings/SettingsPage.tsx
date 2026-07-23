@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useSettingsStore } from '@app/stores/settingsStore';
 import type { AppSettings } from '@shared/ipc/types';
 import { PageHeader } from '@app/components/layout/PageHeader';
+import { PageLayout } from '@app/components/layout/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@app/components/ui/Card';
 import { Switch } from '@app/components/ui/Switch';
 import { Label } from '@app/components/ui/Label';
@@ -24,11 +25,15 @@ export function SettingsPage() {
   }, [fetchSettings]);
 
   if (loading || !settings) {
-    return <p className="text-sm text-[var(--text-muted)]">Loading settings...</p>;
+    return (
+      <PageLayout>
+        <p className="text-sm text-[var(--text-muted)]">Loading settings...</p>
+      </PageLayout>
+    );
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <PageLayout>
       <PageHeader title="Settings" description="Configure GoalOS preferences." />
 
       <Card>
@@ -123,7 +128,7 @@ export function SettingsPage() {
           </CardDescription>
         </CardHeader>
       </Card>
-    </div>
+    </PageLayout>
   );
 }
 

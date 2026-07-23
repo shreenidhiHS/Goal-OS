@@ -46,6 +46,7 @@ export function initDatabase(userDataPath: string) {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         description TEXT,
+        notes TEXT,
         start_date TEXT,
         target_date TEXT,
         color TEXT,
@@ -54,6 +55,8 @@ export function initDatabase(userDataPath: string) {
         progress REAL NOT NULL DEFAULT 0,
         hours_invested REAL NOT NULL DEFAULT 0,
         tasks_completed INTEGER NOT NULL DEFAULT 0,
+        reminder_enabled INTEGER NOT NULL DEFAULT 0,
+        reminder_time TEXT NOT NULL DEFAULT '09:00',
         created_at TEXT NOT NULL,
         modified_at TEXT NOT NULL
       );
@@ -107,7 +110,8 @@ export function initDatabase(userDataPath: string) {
       );
       CREATE TABLE IF NOT EXISTS tags (
         id TEXT PRIMARY KEY,
-        name TEXT NOT NULL UNIQUE
+        name TEXT NOT NULL UNIQUE,
+        color TEXT
       );
       CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
@@ -125,7 +129,24 @@ export function initDatabase(userDataPath: string) {
     `);
   }
 
+  ensureColumn(sqlite, 'goals', 'notes', 'TEXT');
+  ensureColumn(sqlite, 'goals', 'reminder_enabled', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn(sqlite, 'goals', 'reminder_time', "TEXT NOT NULL DEFAULT '09:00'");
+  ensureColumn(sqlite, 'tags', 'color', 'TEXT');
+
   return db;
+}
+
+function ensureColumn(
+  database: Database.Database,
+  table: string,
+  column: string,
+  definition: string,
+) {
+  const cols = database.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>;
+  if (!cols.some((c) => c.name === column)) {
+    database.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
 }
 
 export function getDb() {

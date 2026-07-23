@@ -3,6 +3,7 @@ import { AppLayout } from './components/layout/AppLayout';
 import { DashboardPage } from './features/dashboard/DashboardPage';
 import { TasksPage } from './features/tasks/TasksPage';
 import { GoalsPage } from './features/goals/GoalsPage';
+import { GoalDetailPage } from './features/goals/GoalDetailPage';
 import { ActivityPage } from './features/activity/ActivityPage';
 import { ReportsPage } from './features/reports/ReportsPage';
 import { SettingsPage } from './features/settings/SettingsPage';
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/planner" element={<PlannerPage />} />
         <Route path="/goals" element={<GoalsPage />} />
+        <Route path="/goals/:id" element={<GoalDetailPage />} />
         <Route path="/activity" element={<ActivityPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/settings" element={<SettingsPage />} />

@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { useDashboardStore } from '@app/stores/dashboardStore';
 import { PageHeader } from '@app/components/layout/PageHeader';
+import { PageLayout } from '@app/components/layout/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@app/components/ui/Card';
 
 function formatDuration(seconds: number): string {
@@ -45,7 +46,7 @@ export function ReportsPage() {
     : [];
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <PageLayout>
       <PageHeader title="Reports" description="Daily productivity overview." />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -78,6 +79,6 @@ export function ReportsPage() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }

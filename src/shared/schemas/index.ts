@@ -20,20 +20,32 @@ export const createTaskSchema = z.object({
 
 export const updateTaskSchema = createTaskSchema.partial().extend({
   status: taskStatusSchema.optional(),
+  goalId: z.string().nullable().optional(),
 });
 
 export const createGoalSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
+  notes: z.string().optional(),
   startDate: z.string().optional(),
   targetDate: z.string().optional(),
   color: z.string().optional(),
   icon: z.string().optional(),
+  reminderEnabled: z.boolean().optional(),
+  reminderTime: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/, 'Use HH:mm')
+    .optional(),
 });
 
 export const updateGoalSchema = createGoalSchema.partial().extend({
   status: goalStatusSchema.optional(),
   progress: z.number().min(0).max(100).optional(),
+});
+
+export const createLabelSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(40),
+  color: z.string().optional(),
 });
 
 export const appSettingsSchema = z.object({

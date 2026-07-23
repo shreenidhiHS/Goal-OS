@@ -6,6 +6,7 @@ import { activityTracker } from './services/activity-tracker';
 import { idleMonitor } from './services/idle-monitor';
 import { focusEngine } from './services/focus-engine';
 import { trayService } from './services/tray-service';
+import { goalReminderService } from './services/goal-reminder-service';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -25,6 +26,7 @@ async function bootstrap() {
   });
 
   trayService.init(getMainWindow);
+  goalReminderService.start();
 }
 
 app.whenReady().then(bootstrap);
@@ -46,6 +48,7 @@ app.on('window-all-closed', () => {
 app.on('before-quit', () => {
   activityTracker.stop();
   idleMonitor.stop();
+  goalReminderService.stop();
   trayService.destroy();
   closeDatabase();
 });

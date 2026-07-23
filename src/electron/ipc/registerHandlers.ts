@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import { IPC_CHANNELS } from '../../shared/ipc/channels';
 import { taskRepository } from '../../database/repositories/task.repository';
 import { goalRepository } from '../../database/repositories/goal.repository';
+import { labelRepository } from '../../database/repositories/label.repository';
 import { activityRepository } from '../../database/repositories/activity.repository';
 import { settingsRepository } from '../../database/repositories/settings.repository';
 import type {
@@ -10,6 +11,7 @@ import type {
   UpdateTaskInput,
   CreateGoalInput,
   UpdateGoalInput,
+  CreateLabelInput,
   AppSettings,
 } from '../../shared/ipc/types';
 
@@ -40,6 +42,10 @@ export function registerGoalHandlers(): void {
     return goalRepository.list();
   });
 
+  ipcMain.handle(IPC_CHANNELS.GOALS_GET_WITH_TASKS, (_event, id: string) => {
+    return goalRepository.getWithTasks(id);
+  });
+
   ipcMain.handle(IPC_CHANNELS.GOALS_CREATE, (_event, input: CreateGoalInput) => {
     return goalRepository.create(input);
   });
@@ -50,6 +56,20 @@ export function registerGoalHandlers(): void {
 
   ipcMain.handle(IPC_CHANNELS.GOALS_DELETE, (_event, id: string) => {
     goalRepository.delete(id);
+  });
+}
+
+export function registerLabelHandlers(): void {
+  ipcMain.handle(IPC_CHANNELS.LABELS_LIST, () => {
+    return labelRepository.list();
+  });
+
+  ipcMain.handle(IPC_CHANNELS.LABELS_CREATE, (_event, input: CreateLabelInput) => {
+    return labelRepository.create(input);
+  });
+
+  ipcMain.handle(IPC_CHANNELS.LABELS_DELETE, (_event, id: string) => {
+    labelRepository.delete(id);
   });
 }
 
@@ -112,6 +132,7 @@ export function registerSettingsHandlers(): void {
 export function registerAllHandlers(): void {
   registerTaskHandlers();
   registerGoalHandlers();
+  registerLabelHandlers();
   registerActivityHandlers();
   registerStatsHandlers();
   registerSettingsHandlers();

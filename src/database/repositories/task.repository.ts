@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { eq, desc } from 'drizzle-orm';
 import { getDb } from '../client';
 import { tasks } from '../schema';
+import { goalRepository } from './goal.repository';
 import type {
   Task,
   CreateTaskInput,
@@ -31,6 +32,13 @@ function mapTask(row: typeof tasks.$inferSelect): Task {
     modifiedAt: row.modifiedAt,
     completedAt: row.completedAt,
   };
+}
+
+function recalcGoals(...goalIds: Array<string | null | undefined>) {
+  const unique = [...new Set(goalIds.filter(Boolean) as string[])];
+  for (const id of unique) {
+    goalRepository.recalculateProgress(id);
+  }
 }
 
 export const taskRepository = {
@@ -83,6 +91,7 @@ export const taskRepository = {
     };
 
     db.insert(tasks).values(row).run();
+    recalcGoals(row.goalId);
     return mapTask(row);
   },
 
@@ -92,6 +101,10 @@ export const taskRepository = {
     if (!existing) throw new Error(`Task not found: ${id}`);
 
     const now = new Date().toISOString();
+    const previousGoalId = existing.goalId;
+    const nextGoalId =
+      input.goalId !== undefined ? (input.goalId ?? null) : existing.goalId;
+
     const updates = {
       title: input.title ?? existing.title,
       description: input.description !== undefined ? input.description : existing.description,
@@ -105,7 +118,7 @@ export const taskRepository = {
       category: input.category !== undefined ? input.category : existing.category,
       tags: input.tags ? JSON.stringify(input.tags) : existing.tags,
       status: input.status ?? existing.status,
-      goalId: input.goalId !== undefined ? input.goalId : existing.goalId,
+      goalId: nextGoalId,
       color: input.color !== undefined ? input.color : existing.color,
       notes: input.notes !== undefined ? input.notes : existing.notes,
       modifiedAt: now,
@@ -118,13 +131,18 @@ export const taskRepository = {
     };
 
     db.update(tasks).set(updates).where(eq(tasks.id, id)).run();
+    recalcGoals(previousGoalId, nextGoalId);
     const updated = db.select().from(tasks).where(eq(tasks.id, id)).get()!;
     return mapTask(updated);
   },
 
   delete(id: string): void {
     const db = getDb();
+    const existing = db.select().from(tasks).where(eq(tasks.id, id)).get();
     db.delete(tasks).where(eq(tasks.id, id)).run();
+    if (existing?.goalId) {
+      recalcGoals(existing.goalId);
+    }
   },
 
   complete(id: string): Task {

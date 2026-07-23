@@ -16,7 +16,10 @@ const titles: Record<string, string> = {
 export function TopBar() {
   const { pathname } = useLocation();
   const { sidebarCollapsed, toggleSidebar } = useUiStore();
-  const title = titles[pathname] ?? 'GoalOS';
+  const title =
+    pathname.startsWith('/goals/') && pathname !== '/goals'
+      ? 'Goal detail'
+      : (titles[pathname] ?? 'GoalOS');
 
   return (
     <div className="flex h-14 shrink-0 items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)]/80 px-4 backdrop-blur-md">

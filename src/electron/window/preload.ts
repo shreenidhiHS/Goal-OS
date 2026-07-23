@@ -7,6 +7,7 @@ import type {
   UpdateTaskInput,
   CreateGoalInput,
   UpdateGoalInput,
+  CreateLabelInput,
   AppSettings,
   SessionChangedEvent,
   IdleChangedEvent,
@@ -24,10 +25,16 @@ const electronAPI: ElectronAPI = {
   },
   goals: {
     list: () => ipcRenderer.invoke(IPC_CHANNELS.GOALS_LIST),
+    getWithTasks: (id: string) => ipcRenderer.invoke(IPC_CHANNELS.GOALS_GET_WITH_TASKS, id),
     create: (input: CreateGoalInput) => ipcRenderer.invoke(IPC_CHANNELS.GOALS_CREATE, input),
     update: (id: string, input: UpdateGoalInput) =>
       ipcRenderer.invoke(IPC_CHANNELS.GOALS_UPDATE, id, input),
     delete: (id: string) => ipcRenderer.invoke(IPC_CHANNELS.GOALS_DELETE, id),
+  },
+  labels: {
+    list: () => ipcRenderer.invoke(IPC_CHANNELS.LABELS_LIST),
+    create: (input: CreateLabelInput) => ipcRenderer.invoke(IPC_CHANNELS.LABELS_CREATE, input),
+    delete: (id: string) => ipcRenderer.invoke(IPC_CHANNELS.LABELS_DELETE, id),
   },
   activity: {
     getTimeline: (date?: string) =>

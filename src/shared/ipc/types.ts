@@ -36,8 +36,9 @@ export interface CreateTaskInput {
   notes?: string;
 }
 
-export interface UpdateTaskInput extends Partial<CreateTaskInput> {
+export interface UpdateTaskInput extends Partial<Omit<CreateTaskInput, 'goalId'>> {
   status?: TaskStatus;
+  goalId?: string | null;
 }
 
 export interface TaskFilter {
@@ -51,6 +52,7 @@ export interface Goal {
   id: string;
   name: string;
   description: string | null;
+  notes: string | null;
   startDate: string | null;
   targetDate: string | null;
   color: string | null;
@@ -59,22 +61,45 @@ export interface Goal {
   progress: number;
   hoursInvested: number;
   tasksCompleted: number;
+  tasksTotal: number;
+  tasksRemaining: number;
+  reminderEnabled: boolean;
+  reminderTime: string;
   createdAt: string;
   modifiedAt: string;
+}
+
+export interface GoalWithTasks {
+  goal: Goal;
+  tasks: Task[];
 }
 
 export interface CreateGoalInput {
   name: string;
   description?: string;
+  notes?: string;
   startDate?: string;
   targetDate?: string;
   color?: string;
   icon?: string;
+  reminderEnabled?: boolean;
+  reminderTime?: string;
 }
 
 export interface UpdateGoalInput extends Partial<CreateGoalInput> {
   status?: GoalStatus;
   progress?: number;
+}
+
+export interface Label {
+  id: string;
+  name: string;
+  color: string | null;
+}
+
+export interface CreateLabelInput {
+  name: string;
+  color?: string;
 }
 
 export interface ActivitySession {
@@ -143,8 +168,14 @@ export interface ElectronAPI {
   };
   goals: {
     list: () => Promise<Goal[]>;
+    getWithTasks: (id: string) => Promise<GoalWithTasks>;
     create: (input: CreateGoalInput) => Promise<Goal>;
     update: (id: string, input: UpdateGoalInput) => Promise<Goal>;
+    delete: (id: string) => Promise<void>;
+  };
+  labels: {
+    list: () => Promise<Label[]>;
+    create: (input: CreateLabelInput) => Promise<Label>;
     delete: (id: string) => Promise<void>;
   };
   activity: {

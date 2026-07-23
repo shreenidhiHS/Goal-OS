@@ -24,6 +24,7 @@ export const goals = sqliteTable('goals', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
+  notes: text('notes'),
   startDate: text('start_date'),
   targetDate: text('target_date'),
   color: text('color'),
@@ -32,6 +33,8 @@ export const goals = sqliteTable('goals', {
   progress: real('progress').notNull().default(0),
   hoursInvested: real('hours_invested').notNull().default(0),
   tasksCompleted: integer('tasks_completed').notNull().default(0),
+  reminderEnabled: integer('reminder_enabled').notNull().default(0),
+  reminderTime: text('reminder_time').notNull().default('09:00'),
   createdAt: text('created_at').notNull(),
   modifiedAt: text('modified_at').notNull(),
 });
@@ -93,6 +96,7 @@ export const categories = sqliteTable('categories', {
 export const tags = sqliteTable('tags', {
   id: text('id').primaryKey(),
   name: text('name').notNull().unique(),
+  color: text('color'),
 });
 
 export const settings = sqliteTable('settings', {

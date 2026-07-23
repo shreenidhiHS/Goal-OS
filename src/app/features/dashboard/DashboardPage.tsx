@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Target } from 'lucide-react';
 import { useDashboardStore } from '@app/stores/dashboardStore';
 import { PageHeader } from '@app/components/layout/PageHeader';
+import { PageLayout } from '@app/components/layout/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@app/components/ui/Card';
 import { Progress } from '@app/components/ui/Progress';
 import { EmptyState } from '@app/components/ui/EmptyState';
@@ -53,19 +54,19 @@ export function DashboardPage() {
 
   if (loading && !stats) {
     return (
-      <div className="mx-auto max-w-5xl space-y-6">
+      <PageLayout>
         <Skeleton className="h-10 w-64" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-24" />
           ))}
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <PageLayout>
       <PageHeader
         title={getGreeting()}
         description={new Date().toLocaleDateString(undefined, {
@@ -97,7 +98,8 @@ export function DashboardPage() {
           <CardContent>
             <Progress value={stats.activeGoal.progress} />
             <p className="font-mono-metrics mt-2 text-sm text-[var(--text-muted)]">
-              {stats.activeGoal.progress}% complete
+              {stats.activeGoal.progress}% · {stats.activeGoal.tasksCompleted}/
+              {stats.activeGoal.tasksTotal} tasks
             </p>
           </CardContent>
         </Card>
@@ -134,6 +136,6 @@ export function DashboardPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }
