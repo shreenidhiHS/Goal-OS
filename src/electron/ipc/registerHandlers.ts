@@ -5,6 +5,7 @@ import { goalRepository } from '../../database/repositories/goal.repository';
 import { labelRepository } from '../../database/repositories/label.repository';
 import { activityRepository } from '../../database/repositories/activity.repository';
 import { settingsRepository } from '../../database/repositories/settings.repository';
+import { agentService } from '../agent';
 import type {
   TaskFilter,
   CreateTaskInput,
@@ -13,6 +14,7 @@ import type {
   UpdateGoalInput,
   CreateLabelInput,
   AppSettings,
+  AiRunPromptInput,
 } from '../../shared/ipc/types';
 
 export function registerTaskHandlers(): void {
@@ -129,6 +131,16 @@ export function registerSettingsHandlers(): void {
   });
 }
 
+export function registerAiHandlers(): void {
+  ipcMain.handle(IPC_CHANNELS.AI_LIST_MODELS, () => agentService.listModels());
+
+  ipcMain.handle(IPC_CHANNELS.AI_RUN_PROMPT, (_event, input: AiRunPromptInput) =>
+    agentService.runPrompt(input),
+  );
+
+  ipcMain.handle(IPC_CHANNELS.AI_TEST_CONNECTION, () => agentService.testConnection());
+}
+
 export function registerAllHandlers(): void {
   registerTaskHandlers();
   registerGoalHandlers();
@@ -136,4 +148,5 @@ export function registerAllHandlers(): void {
   registerActivityHandlers();
   registerStatsHandlers();
   registerSettingsHandlers();
+  registerAiHandlers();
 }

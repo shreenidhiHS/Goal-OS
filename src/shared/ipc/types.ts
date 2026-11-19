@@ -134,6 +134,8 @@ export interface DashboardStats {
   timeline: ActivitySession[];
 }
 
+export type AiProvider = 'none' | 'ollama';
+
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   trackingEnabled: boolean;
@@ -141,6 +143,27 @@ export interface AppSettings {
   notificationsEnabled: boolean;
   startMinimized: boolean;
   launchAtStartup: boolean;
+  aiProvider: AiProvider;
+  aiOllamaPort: number;
+  aiOllamaModel: string;
+}
+
+export interface AiModelInfo {
+  name: string;
+  size?: number;
+}
+
+export interface AiRunPromptInput {
+  prompt: string;
+}
+
+export interface AiRunPromptResult {
+  reply: string;
+  created: {
+    goals: Array<{ id: string; name: string }>;
+    tasks: Array<{ id: string; title: string; goalId: string | null }>;
+  };
+  error?: string;
 }
 
 export interface SessionChangedEvent {
@@ -188,6 +211,11 @@ export interface ElectronAPI {
   settings: {
     get: () => Promise<AppSettings>;
     set: (settings: Partial<AppSettings>) => Promise<AppSettings>;
+  };
+  ai: {
+    listModels: () => Promise<AiModelInfo[]>;
+    runPrompt: (input: AiRunPromptInput) => Promise<AiRunPromptResult>;
+    testConnection: () => Promise<{ ok: boolean; message: string }>;
   };
   onSessionChanged: (callback: (event: SessionChangedEvent) => void) => () => void;
   onIdleChanged: (callback: (event: IdleChangedEvent) => void) => () => void;

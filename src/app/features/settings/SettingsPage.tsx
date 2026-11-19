@@ -4,6 +4,7 @@ import { useSettingsStore } from '@app/stores/settingsStore';
 import type { AppSettings } from '@shared/ipc/types';
 import { PageHeader } from '@app/components/layout/PageHeader';
 import { PageLayout } from '@app/components/layout/PageLayout';
+import { AiSettingsCard } from '@app/components/ai/AiSettingsCard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@app/components/ui/Card';
 import { Switch } from '@app/components/ui/Switch';
 import { Label } from '@app/components/ui/Label';
@@ -61,6 +62,8 @@ export function SettingsPage() {
           </SettingRow>
         </CardContent>
       </Card>
+
+      <AiSettingsCard settings={settings} updateSettings={updateSettings} />
 
       <Card>
         <CardHeader>

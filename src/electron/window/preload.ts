@@ -9,6 +9,7 @@ import type {
   UpdateGoalInput,
   CreateLabelInput,
   AppSettings,
+  AiRunPromptInput,
   SessionChangedEvent,
   IdleChangedEvent,
   FocusChangedEvent,
@@ -49,6 +50,11 @@ const electronAPI: ElectronAPI = {
     get: () => ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_GET),
     set: (settings: Partial<AppSettings>) =>
       ipcRenderer.invoke(IPC_CHANNELS.SETTINGS_SET, settings),
+  },
+  ai: {
+    listModels: () => ipcRenderer.invoke(IPC_CHANNELS.AI_LIST_MODELS),
+    runPrompt: (input: AiRunPromptInput) => ipcRenderer.invoke(IPC_CHANNELS.AI_RUN_PROMPT, input),
+    testConnection: () => ipcRenderer.invoke(IPC_CHANNELS.AI_TEST_CONNECTION),
   },
   onSessionChanged: (callback) => {
     const handler = (_: Electron.IpcRendererEvent, event: SessionChangedEvent) =>

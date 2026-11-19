@@ -55,4 +55,7 @@ export const appSettingsSchema = z.object({
   notificationsEnabled: z.boolean(),
   startMinimized: z.boolean(),
   launchAtStartup: z.boolean(),
+  aiProvider: z.enum(['none', 'ollama']),
+  aiOllamaPort: z.number().int().min(1).max(65535),
+  aiOllamaModel: z.string(),
 });

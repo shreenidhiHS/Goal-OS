@@ -5,6 +5,9 @@ export const DEFAULT_SETTINGS = {
   notificationsEnabled: true,
   startMinimized: false,
   launchAtStartup: false,
+  aiProvider: 'none',
+  aiOllamaPort: 11434,
+  aiOllamaModel: '',
 } as const;
 
 export const TRACKER_POLL_INTERVAL_MS = 2000;

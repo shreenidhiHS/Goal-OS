@@ -19,6 +19,9 @@ export const settingsRepository = {
         stored.notificationsEnabled ?? DEFAULT_SETTINGS.notificationsEnabled,
       startMinimized: stored.startMinimized ?? DEFAULT_SETTINGS.startMinimized,
       launchAtStartup: stored.launchAtStartup ?? DEFAULT_SETTINGS.launchAtStartup,
+      aiProvider: stored.aiProvider ?? DEFAULT_SETTINGS.aiProvider,
+      aiOllamaPort: stored.aiOllamaPort ?? DEFAULT_SETTINGS.aiOllamaPort,
+      aiOllamaModel: stored.aiOllamaModel ?? DEFAULT_SETTINGS.aiOllamaModel,
     };
   },
 

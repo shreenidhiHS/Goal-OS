@@ -23,6 +23,10 @@ export const IPC_CHANNELS = {
   SETTINGS_GET: 'settings:get',
   SETTINGS_SET: 'settings:set',
 
+  AI_LIST_MODELS: 'ai:listModels',
+  AI_RUN_PROMPT: 'ai:runPrompt',
+  AI_TEST_CONNECTION: 'ai:testConnection',
+
   TRACKER_SESSION_CHANGED: 'tracker:sessionChanged',
   TRACKER_IDLE_CHANGED: 'tracker:idleChanged',
   TRACKER_FOCUS_CHANGED: 'tracker:focusChanged',
